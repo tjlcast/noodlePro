@@ -19,7 +19,7 @@ def send_result(conn, out, result):
 
 
 def handle_conn(conn, addr, handlers):
-    print(addr, "cones")
+    print(addr, "comes")
     while True:
         length_prefix = conn.recv(4)    # 接收4个字节
         if not length_prefix:
@@ -40,11 +40,11 @@ def handle_conn(conn, addr, handlers):
 def loop(sock, handlers):
     while True:
         conn, addr = sock.accept()
-        pid = os.fork()
+        pid = os.fork() # fork 调用后，父子进程都将会从这里开始，区别是返回的pid不同
         if pid < 0: # fork error
             return
-        if pid > 0: # parent process
-            conn.close()
+        if pid > 0: # 此时的pid表示父进程的pid
+            conn.close()# 关闭父进程的客户端套接字引用
             continue
         if pid == 0:    # 关闭子进程的服务套接字引用
             sock.close()
